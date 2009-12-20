@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import json
 import re
 import socket
@@ -28,12 +29,12 @@ class Coder:
 
   def encode(self, s):
     for decoded, encoded in self.SUB:
-      s = unicode(s).replace(decoded, encoded)
+      s = str(s).replace(decoded, encoded)
     return s
 
   def decode(self, s):
     for decoded, encoded in self.SUB:
-      s = unicode(s).replace(encoded, decoded)
+      s = str(s).replace(encoded, decoded)
     return s
 
 
@@ -202,6 +203,7 @@ class Printer:
 
 class HumanPrinter(Printer):
   def _generate_header(self, s):
+    s = str(s)
     separator = len(s)*'='
     return '\n'.join((separator, s, separator))
 

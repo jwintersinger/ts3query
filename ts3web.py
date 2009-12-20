@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import web
 from ts3query import TsConverser, Config
 
