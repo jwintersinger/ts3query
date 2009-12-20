@@ -1,0 +1,46 @@
+* {
+  /*font-family: "Bistream Vera Sans", Verdana, sans-serif;*/
+}
+
+h1 {
+  font-size: 1.9em;
+  text-align: center;
+}
+
+.channel {
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+#frame {
+  width:  100%;
+  height: 100%;
+  position: absolute;
+  background-color: #eee;
+}
+
+#content {
+  width: 20em;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.client-details {
+}
+
+.client-details > dt {
+  float: left;
+}
+
+.client-details > dt:after {
+  content: ":";
+}
+
+.client-details > dd {
+  text-align: right;
+}
+
+dl {
+  margin: 0;
+  margin-bottom: 1em;
+}
