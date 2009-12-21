@@ -254,9 +254,6 @@ class JsonPrinter(Printer):
 
 if __name__ == '__main__':
   '''Execute command-line interface.'''
-  #tsq = TsQuery(sys.argv[1])
-  #print tsq.query('login', {'client_login_name': 'serveradmin', 'client_login_password': 'Hz0y8v1r'})
-  #print tsq.query('clientdbfind', {'pattern': 'Jeff'}, ('away',))
 
   def parse_options():
     parser = OptionParser(usage='usage: %prog [options] server_address')
@@ -278,6 +275,5 @@ if __name__ == '__main__':
   options, args = parse_options()
 
   tsc = TsConverser(args[0])
-  tsc.login('serveradmin', 'Hz0y8v1r')
   printer = options.print_json and JsonPrinter(tsc) or HumanPrinter(tsc)
   printer.print_channels_and_clients()
