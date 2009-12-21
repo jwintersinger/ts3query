@@ -15,9 +15,9 @@ support for the underlying ServerQuery protocol, it can easily be expanded to
 perform any of the operations allowed by ServerQuery.
 
 Ts3Query can be used as a standalone Web application, a Python library, or a
-command-line application. The command-line interface can display human-readable
-output or spit out JSON, allowing usage in non-Python programming environments.
-
+command-line application. JSON can be output from the command-line application
+or from the Web application, permitting use of Ts3Query from within other
+programming environments.
 
 ============
 Requirements
@@ -35,11 +35,18 @@ necessary -- all others may be discarded.
 Stand-alone Web app
 -------------------
 Ts3Query can function as a simple web.py application. (The latest version of
-web.py as of this writing, 0.33, is bundled with Ts3Query, but you can upgrade
-to more recent versions at your discretion.) Simply run "python ts3web.py" to
-bring up the Web interface on port 8080. Alternatively, Ts3Query can be
-deployed on any existing Web server that supports WSGI as per
-http://webpy.org/install.
+web.py as of this writing, 0.33, is bundled with Ts3Query in the web/
+subdirectory, but you can upgrade to more recent versions at your discretion.)
+Simply run "python ts3web.py" to bring up the Web interface on port 8080.
+Alternatively, Ts3Query can be deployed on any existing Web server that
+supports WSGI as per http://webpy.org/install.
+
+----------------------------
+JSON via stand-alone Web app
+----------------------------
+A JSON-encoded representations of all channels and their clients can be
+accessed at /channels.json. A JSON-encoed representation of just those channels
+with clients in them can be accessed at /populated_channels.json.
 
 ----------------------
 Command-line interface
@@ -86,3 +93,14 @@ TsConverser usage:
   # empty. It's a happier interface!
   print tsc.list_populated_channels()
 
+============
+Shortcomings
+============
+To my mind, Ts3Query's most substantial shortcoming is its lack of support for
+grouped or nested parameters, which allow for an action to be applied to more
+than one object. An example of such a query is "clientkick clid=1|clid=2|clid=3
+reasonid=5". So far as I am aware, one may achieve the same effect by running
+the command once for each grouped/nested parameter.
+
+The visual appeal of the Web interface is lacking. One day, if I can think of
+an appealing visualization, I may change this.
