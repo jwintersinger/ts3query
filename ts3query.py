@@ -13,7 +13,7 @@ debug.verbose = False
 class Coder:
   '''Encode and decode strings as per ServerQuery specification.'''
 
-  SUB = (
+  _SUB = (
     ('\\', '\\\\'),
     (' ',  '\\s'),
     ('/',  '\\/'),
@@ -27,15 +27,17 @@ class Coder:
     ('\v', '\\v'),
   )
 
-  def encode(self, s):
-    for decoded, encoded in self.SUB:
-      s = str(s).replace(decoded, encoded)
+  def _code(self, s, do_encode):
+    for decoded, encoded in self._SUB:
+      params = do_encode and (decoded, encoded) or (encoded, decoded)
+      s = str(s).replace(*params)
     return s
 
+  def encode(self, s):
+    return self._code(s, True)
+
   def decode(self, s):
-    for decoded, encoded in self.SUB:
-      s = str(s).replace(encoded, decoded)
-    return s
+    return self._code(s, False)
 
 
 class Config:
