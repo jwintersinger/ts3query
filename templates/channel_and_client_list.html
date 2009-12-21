@@ -10,7 +10,7 @@ $def boolean_int_to_human_readable(b):
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>$server_name</h1>
+    <title>$server_name</title>
     <link rel="stylesheet" type="text/css" href="static/channel_and_client_list.css" />
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
     <script type="text/javascript" src="static/channel_and_client_list.js"></script>
@@ -24,18 +24,20 @@ $def boolean_int_to_human_readable(b):
     $else:
       <ul id="channel-list">
       $for channel in channels:
-        <li class="channel">$channel['channel_name']</li>
-        <ul class="client-list">
-        $for client in channel['clients']:
-          <li class="client">
-            $client['client_nickname']
-            <dl class="client-details">
-              <dt>Away</dt><dd>$boolean_int_to_human_readable(client['client_away'])</dd>
-              <dt>Microphone muted</dt><dd>$boolean_int_to_human_readable(client['client_input_muted'])</dd>
-              <dt>Speakers/headset muted</dt><dd>$boolean_int_to_human_readable(client['client_output_muted'])</dd>
-            </dl>
-          </li>
-        </ul>
+        <li class="channel">
+          <p class="channel-name">$channel['channel_name']</p>
+          <ul class="client-list">
+          $for client in channel['clients']:
+            <li class="client">
+              $client['client_nickname']
+              <dl class="client-details">
+                <dt>Away</dt><dd>$boolean_int_to_human_readable(client['client_away'])</dd>
+                <dt>Microphone muted</dt><dd>$boolean_int_to_human_readable(client['client_input_muted'])</dd>
+                <dt>Speakers/headset muted</dt><dd>$boolean_int_to_human_readable(client['client_output_muted'])</dd>
+              </dl>
+            </li>
+          </ul>
+        </li>
       </ul>
     </div>
   </body>

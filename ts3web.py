@@ -2,7 +2,7 @@
 import web
 from ts3query import TsConverser, Config
 
-ADDRESS = 'ts.da-shiz.net'
+ADDRESS = 'voice.teamspeak.com'
 VOICE_PORT = Config.DEFAULT_VOICE_PORT
 
 urls = (
