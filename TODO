@@ -1,4 +1,1 @@
-Provide more precise exceptions when command fails, with dedicated class
-Attempt to include idle time for each client (maybe need to login as admin, pass all options to clientlist)
 Test with Python 2.5
-Test with Unicode in names

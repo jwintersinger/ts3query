@@ -46,6 +46,9 @@ class Config:
   DEFAULT_QUERY_PORT  = 10011
 
 
+class CommandFailedError(Exception):
+  pass
+
 class TsQuery:
   '''Low-level interface to TS server.'''
 
@@ -142,7 +145,7 @@ class TsQuery:
 
     cmd_status = self._decode(response_lines.pop())[0] # "[0]" as only one item should be returned.
     if not (cmd_status['msg'] == 'ok' and cmd_status['id'] == 0):
-      raise Exception('%s did not succeed' % cmd)
+      raise CommandFailedError('"%s" failed with error %s (%s)' % (cmd, cmd_status['id'], cmd_status['msg']))
 
     if response_lines: # Response other than command status made.
       return self._decode(response_lines[-1])
@@ -152,7 +155,8 @@ class TsQuery:
   def _decode(self, response):
     '''Split response string into list, where each element is a dictionary representing one item of
     the response (e.g., a single client or channel). If a given response parameter has no value
-    associated with it, it will be set to True.'''
+    associated with it, it will be set to True.
+    '''
     items = []
     for item in response.split('|'):
       items.append({})
@@ -183,11 +187,13 @@ class TsConverser:
     self._query = TsQuery(address, server_port, query_port)
 
   def list_clients(self):
+    '''Returns list of all clients that aren't SeverQuery users.'''
     clients = self._query.query('clientlist', options=('away', 'voice'))
     # Remove ServerQuery clients from list.
     return [client for client in clients if client['client_type'] != 1]
 
   def list_channels(self):
+    '''Returns list of all channels, as well as which client is in each chanel.'''
     clients = self.list_clients()
     channels = self._query.query('channellist')
     for channel in channels:
@@ -195,21 +201,33 @@ class TsConverser:
     return channels
 
   def list_populated_channels(self):
+    '''Returns list of channels with clients in them, as well as which client is in each chanel.'''
     # Can't rely on channel['total_clients'], as it counts ServerQuery clients.
     return [channel for channel in self.list_channels() if len(channel['clients']) > 0]
 
+  def login(self, username, password):
+    '''Login to ServerQuery interface. With the default server permissions in place, if one wants
+    only to list the channels and clients, one need not login. Returns None.
+    '''
+    return self._query.query('login', {'client_login_name': username, 'client_login_password': password})
+
 
 class Printer:
+  '''Base class for all output types used by command-line interface.'''
   def __init__(self, ts_converser):
     self._ts_converser = ts_converser
 
 class HumanPrinter(Printer):
+  '''Human-formatted printer. Used for command-line interface.'''
+
   def _generate_header(self, s):
+    '''Returns string with equal signs above and below s.'''
     s = str(s)
     separator = len(s)*'='
     return '\n'.join((separator, s, separator))
 
   def print_channels_and_clients(self):
+    '''Prints all channels with clients in them.'''
     channels = self._ts_converser.list_populated_channels()
     for i in range(len(channels)):
       channel = channels[i]
@@ -222,12 +240,17 @@ class HumanPrinter(Printer):
 
 
 class JsonPrinter(Printer):
+  '''JSON-formatted printer. Potentially useful for interfacing with other programming
+  environments.
+  '''
   def print_channels_and_clients(self):
+    '''Returns JSON-formatted listing of all channels with clients in them.'''
     channels = self._ts_converser.list_populated_channels()
     print json.dumps(channels)
       
 
 if __name__ == '__main__':
+  '''Execute command-line interface.'''
   #tsq = TsQuery(sys.argv[1])
   #print tsq.query('login', {'client_login_name': 'serveradmin', 'client_login_password': 'Hz0y8v1r'})
   #print tsq.query('clientdbfind', {'pattern': 'Jeff'}, ('away',))
@@ -252,5 +275,6 @@ if __name__ == '__main__':
   options, args = parse_options()
 
   tsc = TsConverser(args[0])
+  tsc.login('serveradmin', 'Hz0y8v1r')
   printer = options.print_json and JsonPrinter(tsc) or HumanPrinter(tsc)
   printer.print_channels_and_clients()
