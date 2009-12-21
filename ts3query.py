@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-import json
 import re
 import socket
 import sys
@@ -134,8 +133,8 @@ class TsQuery:
     is made (other than commannd's status), return a list where each element is a dictionary
     representing one item of the response (e.g., a single client or channel).
     '''
-    # Can't specify params={} in function definition, as dictionaries are mutable -- if defined
-    # as empty dictionary in function definition, it would accumulate values across multiple calls. 
+    # Can't specify params={} in method definition, as dictionaries are mutable -- if defined
+    # as empty dictionary in method definition, it would accumulate values across multiple calls. 
     if not params:
       params = {}
 
@@ -244,7 +243,11 @@ class JsonPrinter(Printer):
   environments.
   '''
   def print_channels_and_clients(self):
-    '''Returns JSON-formatted listing of all channels with clients in them.'''
+    '''Returns JSON-formatted listing of all channels with clients in them. Requires Python 2.6+.'''
+    # Do import here as JSON was made part of standard library only with Python 2.6. Users with
+    # Python 2.5 who want to call this method will need to install simplejson and change the import statement to
+    # "import simplejson as json".
+    import json
     channels = self._ts_converser.list_populated_channels()
     print json.dumps(channels)
       
