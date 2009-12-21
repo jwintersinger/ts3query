@@ -1,7 +1,7 @@
 ========
 Ts3Query
 ========
-Version: 0.1
+Version: 0.1.0
 License: Public domain
 Author: Micand (but you may call me Jeff)
 
