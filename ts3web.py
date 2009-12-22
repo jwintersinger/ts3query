@@ -9,10 +9,11 @@ VOICE_PORT = Config.DEFAULT_VOICE_PORT
 
 
 # web.py miscellany.
+URL_PREFIX = '/ts'
 urls = (
-  '/',                        'ChannelAndClientList',
-  '/channels.json',           'ChannelAndClientListJson',
-  '/populated_channels.json', 'PopulatedChannelAndClientListJson'
+  URL_PREFIX + '/',                        'ChannelAndClientList',
+  URL_PREFIX + '/channels.json',           'ChannelAndClientListJson',
+  URL_PREFIX + '/populated_channels.json', 'PopulatedChannelAndClientListJson'
 )
 render = web.template.render('templates/')
 app = web.application(urls, globals())
