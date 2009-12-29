@@ -11,7 +11,7 @@ jQuery.extend(jQuery.easing, {
   logger: function(x, t, b, c, d) {
     var f = jQuery.easing.happySwing;
     var ret = f(x, t, b, c, d);
-    //console.log([x, t, b, c, d, ret]);
+    console.log([x, t, b, c, d, ret]);
     //console.log(ret - jQuery.easing.happySine(x, t, b, c, d));
     return ret;
   },
@@ -34,6 +34,9 @@ jQuery.extend(jQuery.easing, {
 
   // Equivalent to jQuery's default jQuery.easing.swing and jQuery Easing's
   // jQuery.easing.easeInOutSine, but I think my version is clearer.
+  // I note with some pride that I figured my version out in my head, from scratch, before I
+  // compared its output to the two aforementioned alternatives and realized that they were
+  // equivalent to mine.
   happySine: function(x, t, b, c, d) {
     return (1/2)*c*(Math.sin(Math.PI*x - Math.PI/2) + 1) + b;
   },
@@ -57,7 +60,14 @@ $(document).ready(function() {
 function ScrollingDisplay() {
   this._e = $('#weiner');
   this._fillers = [
-    'Do you love the good games?'
+    'Do you love the good games?',
+    'I have a huge bonner.',
+    'Huge bonner? More like huge erect phallus.',
+    'I just splooged my bonner.',
+    'My name is Zoey, and I am so wet.',
+    'Oh, baby, you make me moderately damp.',
+    'Please me good games.',
+    'I spilled beer on my router.'
   ];
 }
 
@@ -101,7 +111,7 @@ ScrollingDisplay.prototype.append = function(html) {
     marginTop: margin_top + 'px'
   }, {
     easing: 'logger',
-    duration: 90*filler_length,
+    duration: 100*filler_length,
     complete: function() {
       // TODO: remove invisible from DOM; here, I do nothing with them. Must work out how to stop
       // elements below invisible from being positioned way upward once invisible elements are
