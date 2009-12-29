@@ -1,0 +1,31 @@
+@font-face {
+  font-family: Krabougja;
+  src: url('Krabougja.ttf') format('truetype');
+}
+
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
+.pants {
+  padding: 0;
+  margin: 0;
+}
+
+#container {
+  background-color: #ccc;
+  width: 10em;;
+  height: 30em;
+  overflow: hidden;
+}
+
+#weiner {
+  /*font-family: Krabougja;*/
+}
+
+.filler {
+  font-size: 4em;
+  text-align: center;
+  border: solid red 1px;
+}
