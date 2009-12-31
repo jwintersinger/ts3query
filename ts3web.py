@@ -13,7 +13,8 @@ URL_PREFIX = '/ts'
 urls = (
   URL_PREFIX + '/',                        'ChannelAndClientList',
   URL_PREFIX + '/channels.json',           'ChannelAndClientListJson',
-  URL_PREFIX + '/populated_channels.json', 'PopulatedChannelAndClientListJson'
+  URL_PREFIX + '/populated_channels.json', 'PopulatedChannelAndClientListJson',
+  URL_PREFIX + '/client/(\d+).json',       'ClientDetailsJson'
 )
 render = web.template.render('templates/')
 app = web.application(urls, globals())
@@ -56,6 +57,13 @@ class PopulatedChannelAndClientListJson(JsonRequest):
 
   def GET(self):
     return json.dumps(self._tsc.list_populated_channels())
+
+
+class ClientDetailsJson(JsonRequest):
+  '''Displays JSON-formatted details for given client.'''
+
+  def GET(self, client_id):
+    return json.dumps(self._tsc.list_client_details(client_id))
 
 
 if __name__ == '__main__':

@@ -210,11 +210,16 @@ class TsConverser:
     '''
     return self._query.query('login', {'client_login_name': username, 'client_login_password': password})
 
+  def list_client_details(self, client_id):
+    return self._query.query('clientinfo', {'clid': client_id})
+
 
 class Printer:
   '''Base class for all output types used by command-line interface.'''
+
   def __init__(self, ts_converser):
     self._ts_converser = ts_converser
+
 
 class HumanPrinter(Printer):
   '''Human-formatted printer. Used for command-line interface.'''
