@@ -8,16 +8,42 @@
   padding: 0px;
 }
 
+body {
+  width: 20em;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+h1 {
+  padding: 0.5em;
+}
+
 .pants {
   padding: 0;
   margin: 0;
 }
 
-#container {
+#channel-list {
+  float: left;
+  text-align: right;
+  margin-right: 1em;
+}
+
+#channel-list, .client-list {
+  list-style-type: none;
+}
+
+.channel-name {
+  font-weight: bold;
+}
+
+#details {
+  margin-left: 1em;
   background-color: #ccc;
   width: 10em;;
   height: 30em;
   overflow: hidden;
+  float: left;
 }
 
 #weiner {
@@ -32,3 +58,4 @@
   -webkit-user-select: none;
   user-select: none;
 }
+
