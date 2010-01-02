@@ -7,6 +7,8 @@ mv web.py-0.33/web . && rmdir web.py-0.33
 rm package.sh
 cd ..
 
+rm packages/"$name".tar.bz2
 tar cvjf packages/"$name".tar.bz2 "$name"
+rm packages/"$name".zip
 zip -r packages/"$name".zip "$name"
 rm -rI "$name"
