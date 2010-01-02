@@ -1,3 +1,15 @@
+$(document).ready(function() {
+  var scrolling_display = new ScrollingDisplay();
+  scrolling_display.append('<p id="whoa">Whoa<br />Whoa<br />Whoa<br />Whoa<br />Whoa</p><p id="ding">Ding</p>');
+  setTimeout(function() { scrolling_display.append('<p id="pants">Pants</p>'); }, 3000);
+
+  $('.client').click(function() {
+    console.log(arguments);
+    scrolling_display.append('<dl><dt>Pants</dt><dd>No</dd></dl>');
+  });
+});
+
+
 jQuery.extend(jQuery.easing, {
   // x: Fraction of animation that is complete in range [0, 1). To implement linear easing, simply
   //     return x. Value is t/d.
@@ -9,9 +21,9 @@ jQuery.extend(jQuery.easing, {
   // Return: computed value for current animation. b <= computed value <= b + c.
   
   logger: function(x, t, b, c, d) {
-    var f = jQuery.easing.happySwing;
+    var f = jQuery.easing.happySine;
     var ret = f(x, t, b, c, d);
-    console.log([x, t, b, c, d, ret]);
+    //console.log([x, t, b, c, d, ret]);
     //console.log(ret - jQuery.easing.happySine(x, t, b, c, d));
     return ret;
   },
@@ -51,14 +63,9 @@ jQuery.extend(jQuery.easing, {
   }
 });
 
-$(document).ready(function() {
-  var scrolling_display = new ScrollingDisplay();
-  scrolling_display.append('<p id="whoa">Whoa</p>');
-  setTimeout(function() { scrolling_display.append('<p id="pants">Pants</p>'); }, 200);
-});
 
 function ScrollingDisplay() {
-  this._e = $('#weiner');
+  this._e = $('#details-content');
   this._fillers = [
     'Do you love the good games?',
     'I have a huge bonner.',
@@ -69,15 +76,19 @@ function ScrollingDisplay() {
     'Please me good games.',
     'I spilled beer on my router.'
   ];
+  this._viewport = this._e.parent();
 }
 
 ScrollingDisplay.prototype._append_filler = function() {
-  var filler = this._get_random_element(this._fillers);
+  var filler = this._fillers[0];//this._get_random_element(this._fillers);
   var html = '';
   $.each(filler, function() {
     html += this + '<br />\n';
   });
-  this._e.append('<p class="filler" id="pants">' + html + '</p>');
+
+  // Put filler text just below visible viewport.
+  var y_offset = this._viewport.innerHeight() - this._calculate_post_filler_height();
+  this._e.append('<p class="filler" style="margin-top: ' + y_offset + 'px">' + html + '</p>');
   return filler;
 }
 
@@ -92,12 +103,30 @@ ScrollingDisplay.prototype._get_random_int = function(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+ScrollingDisplay.prototype._get_final_filler = function() {
+  return this._e.find('.filler:last');
+}
+
+// Returns height of all elements that follow the final filler.
+ScrollingDisplay.prototype._calculate_post_filler_height = function() {
+  var filler = this._get_final_filler();
+  // If this is first call to this function after initialization, no filler will yet be present, and
+  // so we must count all children. Otherwise, count all children following the last filler.
+  var elements = (filler.size() > 0) ? filler.nextAll() : this._e.children();
+
+  var height_sum = 0;
+  elements.nextAll().each(function() {
+    height_sum += $(this).outerHeight();
+  });
+  return height_sum;
+}
+
 ScrollingDisplay.prototype.append = function(html) {
   var filler_length = this._append_filler().length;
   this._e.append(html);
 
   var margin_top = parseInt(this._e.css('marginTop'), 10);
-  var final_filler = this._e.find('.filler:last');
+  var final_filler = this._get_final_filler();
   // When using a custom font via CSS font-face, final_filler.outerHeight()'s value will be for the
   // default font rather than the custom one, as there is a delay while the browser loads the font
   // on the order of 50-100 ms. This delay persists even if the browser is loading the font from the
@@ -105,7 +134,12 @@ ScrollingDisplay.prototype.append = function(html) {
   // circumvent this issue is to avoid using a custom font, for though one can insert a setTimeout
   // call that performs the height calculation and animation after a given delay, providing the
   // browser time to load the font, the time to load the font varies on myriad factors.
-  margin_top -= final_filler.outerHeight() + final_filler.offset().top;
+  //
+  // final_filler.offset().top: y coordinate of top of filler block within this._e. Note that this
+  //                            value includes the offset of the container itself, which is why we
+  //                            must subtract.
+  // final_filler.outerHeight(): height of filler, including borders and padding.
+  margin_top -= (final_filler.offset().top - this._viewport.offset().top) + final_filler.outerHeight();
 
   this._e.animate({
     marginTop: margin_top + 'px'
