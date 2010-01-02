@@ -1,0 +1,1 @@
+Ensure XSS not introducd due to jQuery usage.

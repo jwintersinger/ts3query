@@ -87,7 +87,7 @@ ScrollingDisplay.prototype._append_filler = function() {
   });
 
   // Put filler text just below visible viewport.
-  var y_offset = this._viewport.innerHeight() - this._calculate_post_filler_height();
+  var y_offset = this._viewport.outerHeight() - this._calculate_preceding_content_height();
   this._e.append('<p class="filler" style="margin-top: ' + y_offset + 'px">' + html + '</p>');
   return filler;
 }
@@ -107,15 +107,10 @@ ScrollingDisplay.prototype._get_final_filler = function() {
   return this._e.find('.filler:last');
 }
 
-// Returns height of all elements that follow the final filler.
-ScrollingDisplay.prototype._calculate_post_filler_height = function() {
-  var filler = this._get_final_filler();
-  // If this is first call to this function after initialization, no filler will yet be present, and
-  // so we must count all children. Otherwise, count all children following the last filler.
-  var elements = (filler.size() > 0) ? filler.nextAll() : this._e.children();
-
+// Returns height of all children within containing element.
+ScrollingDisplay.prototype._calculate_preceding_content_height = function() {
   var height_sum = 0;
-  elements.nextAll().each(function() {
+  this._e.children().each(function() {
     height_sum += $(this).outerHeight();
   });
   return height_sum;
@@ -141,19 +136,17 @@ ScrollingDisplay.prototype.append = function(html) {
   // final_filler.outerHeight(): height of filler, including borders and padding.
   margin_top -= (final_filler.offset().top - this._viewport.offset().top) + final_filler.outerHeight();
 
+  var self = this;
   this._e.animate({
     marginTop: margin_top + 'px'
   }, {
     easing: 'logger',
     duration: 100*filler_length,
     complete: function() {
-      // TODO: remove invisible from DOM; here, I do nothing with them. Must work out how to stop
-      // elements below invisible from being positioned way upward once invisible elements are
-      // removed.
-      var invisible = $.grep($(this).children(), function(child) {
-        var child = $(child);
-        if(child.offset().top + child.height() < 0) return true;
-      });
+      // Remove newly-invisible elements from DOM.
+      var invisible = self._get_final_filler().prevAll().andSelf();
+      invisible.remove();
+      self._e.css('marginTop', '0px');
     }
   });
 }
