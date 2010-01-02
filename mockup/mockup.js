@@ -1,12 +1,17 @@
+if(console === undefined) var console = { log: function() { } };
+
 $(document).ready(function() {
   var scrolling_display = new ScrollingDisplay();
-  scrolling_display.append('<p id="whoa">Whoa<br />Whoa<br />Whoa<br />Whoa<br />Whoa</p><p id="ding">Ding</p>');
-  setTimeout(function() { scrolling_display.append('<p id="pants">Pants</p>'); }, 3000);
+  setTimeout(function() { scrolling_display.append('<p id="whoa">Whoa<br />Whoa<br />Whoa<br />Whoa'
+    + '<br />Whoa</p><p id="ding">Ding</p>'); }, 100);
+  setTimeout(function() { scrolling_display.append('<p id="pants">Pants</p>'); }, 500);
 
   $('.client').click(function() {
     console.log(arguments);
     scrolling_display.append('<dl><dt>Pants</dt><dd>No</dd></dl>');
   });
+
+  new TextInflater('.client-name, .channel-name, h1', 1.3);
 });
 
 
@@ -80,7 +85,7 @@ function ScrollingDisplay() {
 }
 
 ScrollingDisplay.prototype._append_filler = function() {
-  var filler = this._fillers[0];//this._get_random_element(this._fillers);
+  var filler = this._get_random_element(this._fillers);
   var html = '';
   $.each(filler, function() {
     html += this + '<br />\n';
@@ -109,8 +114,11 @@ ScrollingDisplay.prototype._get_final_filler = function() {
 
 // Returns height of all children within containing element.
 ScrollingDisplay.prototype._calculate_preceding_content_height = function() {
+  var final_filler = this._get_final_filler();
+  var elements = (final_filler.size() > 0) ? final_filler.nextAll() : this._e.children();
+
   var height_sum = 0;
-  this._e.children().each(function() {
+  elements.each(function() {
     height_sum += $(this).outerHeight();
   });
   return height_sum;
@@ -143,10 +151,42 @@ ScrollingDisplay.prototype.append = function(html) {
     easing: 'logger',
     duration: 100*filler_length,
     complete: function() {
+      console.log('done');
       // Remove newly-invisible elements from DOM.
       var invisible = self._get_final_filler().prevAll().andSelf();
+      // BUG: things get messed up if animation is already in progress and I remove elements. Skip
+      // removing elements until fixed.
+      return;
       invisible.remove();
       self._e.css('marginTop', '0px');
     }
+  });
+}
+
+
+function TextInflater(elements, factor) {
+  var self = this;
+  $(elements).hover(function() {
+    var element = $(this);
+    // We must store the base_font_size, as if we simply fetch the font size on each hover event,
+    // then bad things happen when a resizing animation is triggered while a previous one is still
+    // in progress (i.e., the user hovers over the element, moves his mouse out, then quickly hovers
+    // over it again). In such a case, the element's font size will be in flux because the resizing
+    // animation will still be adjusting it step-by-step, resulting in the font size ending up at a
+    // value different from before any animations were triggered.
+    if(element.data('base_font_size') === undefined)
+      element.data('base_font_size', parseInt(element.css('fontSize'), 10));
+    self._adjust_size(element, factor);
+  }, function() {
+    self._adjust_size($(this), 1);
+  });
+}
+
+TextInflater.prototype._adjust_size = function(element, factor) {
+  element.animate({
+    fontSize: factor*element.data('base_font_size')
+  }, {
+    easing: 'logger',
+    duration: 200
   });
 }

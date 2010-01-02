@@ -6,16 +6,19 @@
 * {
   margin: 0px;
   padding: 0px;
+  font-family: Krabougja;
 }
 
 body {
-  width: 20em;
+  width: 30em;
   margin-left: auto;
   margin-right: auto;
 }
 
 h1 {
   padding: 0.5em;
+  text-align: center;
+  font-size: 2.5em;
 }
 
 
@@ -26,6 +29,7 @@ h1 {
   float: left;
   text-align: right;
   margin-right: 1em;
+  width: 10em;
 }
 
 #channel-list, .client-list {
@@ -33,6 +37,7 @@ h1 {
 }
 
 .channel-name {
+  font-size: 1.3em;
   font-weight: bold;
 }
 
@@ -41,7 +46,6 @@ h1 {
  Details
  #######*/
 #details-viewport {
-  margin-top: 5em;
   margin-left: 1em;
   background-color: #ccc;
   width: 10em;
