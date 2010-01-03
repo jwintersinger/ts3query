@@ -1,32 +1,36 @@
 $def with (server_name, channels)
 
-
 <!DOCTYPE html>
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>$server_name</title>
-    <link rel="stylesheet" type="text/css" href="static/channel_and_client_list.css" />
+    <link rel="stylesheet" type="text/css" href="$url('/static/ts3query.css')" />
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
-    <script type="text/javascript" src="static/channel_and_client_list.js"></script>
+    <script type="text/javascript" src="$url('/static/ts3query.js')"></script>
   </head>
 
   <body>
-    <div id="content">
-      <h1>$server_name</h1>
-    $if len(channels) == 0:
-      <p>There ain't nobody here, man.</p>
-    $else:
-      <ul id="channel-list">
-      $for channel in channels:
-        <li class="channel">
-          <p class="channel-name">$channel['channel_name']</p>
-          <ul class="client-list">
-          $for client in channel['clients']:
-            <li class="client-name">$client['client_nickname']</li>
-          </ul>
-        </li>
-      </ul>
+    <h1>$server_name</h1>
+
+  $if len(channels) == 0:
+    <p>There ain't nobody here, man.</p>
+
+  $else:
+    <ul id="channel-list">
+    $for channel in channels:
+      <li class="channel">
+        <p class="channel-name">$channel['channel_name']</p>
+        <ul class="client-list">
+        $for client in channel['clients']:
+          <li class="client-name" id="client-$client['clid']">$client['client_nickname']</li>
+        </ul>
+      </li>
+    </ul>
+
+    <div id="details-viewport">
+      <div id="details-content">
+      </div>
     </div>
   </body>
 </html>

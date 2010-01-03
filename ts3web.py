@@ -9,14 +9,15 @@ VOICE_PORT = Config.DEFAULT_VOICE_PORT
 
 
 # web.py miscellany.
-URL_PREFIX = '/ts'
+#web.ctx.homepath = '/ts'
 urls = (
-  URL_PREFIX + '/',                        'ChannelAndClientList',
-  URL_PREFIX + '/channels.json',           'ChannelAndClientListJson',
-  URL_PREFIX + '/populated_channels.json', 'PopulatedChannelAndClientListJson',
-  URL_PREFIX + '/client/(\d+)',            'ClientDetails',
-  URL_PREFIX + '/client/(\d+).json',       'ClientDetailsJson'
+  web.http.url('/'),                        'ChannelAndClientList',
+  web.http.url('/channels.json'),           'ChannelAndClientListJson',
+  web.http.url('/populated_channels.json'), 'PopulatedChannelAndClientListJson',
+  web.http.url('/client/(\d+)'),            'ClientDetails',
+  web.http.url('/client/(\d+).json'),       'ClientDetailsJson'
 )
+
 
 def create_template_helpers():
   def boolean_int_to_human_readable(b):
@@ -44,6 +45,8 @@ def create_template_helpers():
   def make_posix_timestamp_human_readable(timestamp):
     timestamp = 1262476312
     return datetime.fromtimestamp(timestamp).strftime('%b %d, %Y')
+  
+  url = web.http.url # Hack -- is there a better way to get access to web.http.url in templates?
 
   template_helpers = {}
   l = locals()
@@ -52,8 +55,10 @@ def create_template_helpers():
       template_helpers[f.__name__] = f
   return template_helpers
 
+
 render = web.template.render('templates/', globals=create_template_helpers())
 app = web.application(urls, globals())
+
 
 
 class BaseRequest:
