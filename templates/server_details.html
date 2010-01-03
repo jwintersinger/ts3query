@@ -2,7 +2,6 @@ $def with (server_details)
 
 <h2>$server_details['virtualserver_name']</h2>
 <dl>
-  <dt>Clients</dt><dd>$server_details['virtualserver_clientsonline'] / $server_details['virtualserver_maxclients']</dd>
   <dt>Platform</dt><dd>$server_details['virtualserver_platform']</dd>
   <dt>Version</dt><dd>$server_details['virtualserver_version']</dd>
   <dt>Uptime</dt><dd>$make_milliseconds_human_readable(server_details['virtualserver_uptime'])</dd>
