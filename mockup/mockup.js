@@ -15,6 +15,7 @@ $(document).ready(function() {
 });
 
 
+// See http://gsgd.co.uk/sandbox/jquery/easing/ for the jQuery Easing Plugin.
 jQuery.extend(jQuery.easing, {
   // x: Fraction of animation that is complete in range [0, 1). To implement linear easing, simply
   //     return x. Value is t/d.
@@ -35,18 +36,11 @@ jQuery.extend(jQuery.easing, {
 
   // Rewritten version of jQuery Easing's easeInOutExpo to make math clearer.
   clearerEaseInOutExpo: function(x, t, b, c, d) {
-    //return jQuery.easing.easeInOutExpo(x, t, b, c, d);
     var base = 2;
     if(t == 0) return b;                                         // Very start.
     if(t == d) return b + c;                                     // Very end.
     if(x < 1/2) return (1/2)*c*Math.pow(base, 10*(2*x - 1)) + b; // 1st half.
     return (1/2)*c*(-Math.pow(base, -10*(2*x - 1)) + 2) + b;     // 2nd half.
-  },
-
-  happyPolynomial: function(x, t, b, c, d) {
-    var power = 2;
-    if(x < 1/2) return Math.pow(x, power);
-    return Math.pow(-x + 1, power);
   },
 
   // Equivalent to jQuery's default jQuery.easing.swing and jQuery Easing's
