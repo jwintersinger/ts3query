@@ -2,14 +2,10 @@ if(console === undefined) var console = { log: function() { } };
 
 $(document).ready(function() {
   var scrolling_display = new ScrollingDisplay();
-  //setTimeout(function() { scrolling_display.append('<p id="whoa">Whoa<br />Whoa<br />Whoa<br />Whoa'
-    //+ '<br />Whoa</p><p id="ding">Ding</p>'); }, 100);
-  //setTimeout(function() { scrolling_display.append('<p id="pants">Pants</p>'); }, 500);
-
-
-
   configure_details_handler(scrolling_display);
   new TextInflater('.client-name, .channel-name, h1', 1.3);
+  // Give font time to load so display scrolled to proper y-position.
+  setTimeout(function() { $('#server-name').click(); }, 500);
 });
 
 function configure_details_handler(scrolling_display) {
@@ -98,7 +94,12 @@ function ScrollingDisplay() {
     'My name is Zoey, and I am so wet.',
     'Oh, baby, you make me moderately damp.',
     'Please me good games.',
-    'I spilled beer on my router.'
+    'I spilled beer on my router.',
+    'I am a bag of water carrying genetic material.',
+    'The singularity is near, gentlemen.',
+    'He\'s as fruity as a Cezanne still-life.',
+    'Got to kick at the darkness till it bleeds daylight.',
+    'O frabjous day! Callooh! Callay!'
   ];
   this._viewport = this._e.parent();
 }
@@ -170,7 +171,6 @@ ScrollingDisplay.prototype.append = function(html) {
     easing: 'logger',
     duration: 100*filler_length,
     complete: function() {
-      console.log('done');
       // Remove newly-invisible elements from DOM.
       var invisible = self._get_final_filler().prevAll().andSelf();
       // BUG: things get messed up if animation is already in progress and I remove elements. Skip

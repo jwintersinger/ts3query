@@ -1,1 +1,2 @@
 Ensure XSS not introducd due to jQuery usage.
+Figure out why multiple clicks on display result in improper scrolling.
