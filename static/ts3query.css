@@ -45,7 +45,9 @@ dd {
 }
 
 
-
+#server-name, .client-name {
+  cursor: pointer;
+}
 
 /*##########
  Channel list
@@ -54,7 +56,7 @@ dd {
   float: left;
   text-align: right;
   margin-right: 1em;
-  width: 10em;
+  width: 20em;
 }
 
 #channel-list, .client-list {

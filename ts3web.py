@@ -9,9 +9,11 @@ VOICE_PORT = Config.DEFAULT_VOICE_PORT
 
 
 # web.py miscellany.
-web.ctx.homepath = ''#'/ts'
+web.ctx.homepath = ''    # Development
+#web.ctx.homepath = '/ts' # Production
+
 urls = (
-  web.http.url('/'),                        'ChannelAndClientList',
+  web.http.url('/?'),                       'ChannelAndClientList', # Accept both /ts and /ts/.
   web.http.url('/channels.json'),           'ChannelAndClientListJson',
   web.http.url('/populated_channels.json'), 'PopulatedChannelAndClientListJson',
   web.http.url('/client/(\d+)'),            'ClientDetails',

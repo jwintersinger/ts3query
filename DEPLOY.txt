@@ -1,0 +1,27 @@
+Remember to set "web.ctx.homepath = '/ts'" in ts3web.py.
+
+Lighttpd config:
+  server.modules   += ( "mod_rewrite", "mod_fastcgi" )
+
+  $HTTP["host"] == "localhost" {
+    url.rewrite-once = (
+      "^/ts/static/(.*)$" => "/ts3query-static/$1",
+      "^/ts/?(.*)$" => "/ts3web.py/$1"
+    )
+
+    fastcgi.server    = ( "/ts3web.py" =>
+      (("socket"    => "/tmp/ts3query.socket",
+        "check-local" => "disable"
+      ))
+    )
+  }
+
+
+Spawncing FastCGI process:
+  SOCKET=/var/run/webpy/ts3web.socket 
+  mkdir /var/run/webpy && chown webpy:webpy /var/run/webpy
+  REAL_SCRIPT_NAME="" spawn-fcgi -f /var/www/projects/ts3query/ts3web.py \
+                                 -s $SOCKET \
+                                 -u webpy \
+                                 -g webpy
+  chown webpy:www-data $SOCKET && chmod 660 $SOCKET

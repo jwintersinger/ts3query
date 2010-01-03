@@ -1,1 +1,2 @@
 Ensure XSS not introducd due to jQuery usage.
+Highlight user clicked on
