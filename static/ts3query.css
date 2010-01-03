@@ -10,16 +10,41 @@
 }
 
 body {
-  width: 30em;
   margin-left: auto;
   margin-right: auto;
 }
 
-h1 {
-  padding: 0.5em;
+h1, h2 {
   text-align: center;
+}
+
+h1 {
   font-size: 2.5em;
 }
+
+h2 {
+  padding: 0.2em;
+}
+
+dl {
+}
+
+dt {
+  float: left;
+  padding-right: 3px;
+  clear: left;
+}
+
+dt:after {
+  content: ':';
+}
+
+dd {
+  margin: 0;
+  float: right;
+}
+
+
 
 
 /*##########
@@ -47,18 +72,19 @@ h1 {
  #######*/
 #details-viewport {
   margin-left: 1em;
+  padding-left: 1em;
+  padding-right: 1em;
+
   background-color: #ccc;
-  width: 10em;
+  width: 20em;
   height: 30em;
   overflow: hidden;
   float: left;
-  /*font-family: Krabougja;*/
 }
 
 .filler {
   font-size: 4em;
   text-align: center;
-  border: solid red 1px;
   -moz-user-select: none;
   -webkit-user-select: none;
   user-select: none;

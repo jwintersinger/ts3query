@@ -1,5 +1,6 @@
 $def with (client_details)
 
+<h2>$client_details['client_nickname']</h2>
 <dl id="client-details-$client_details['client_database_id']">
   <dt>Idle</dt><dd>$make_milliseconds_human_readable(client_details['client_idle_time'])</dd>
   <dt>Connected</dt><dd>$make_milliseconds_human_readable(client_details['connection_connected_time'])</dd>

@@ -2,13 +2,22 @@ if(console === undefined) var console = { log: function() { } };
 
 $(document).ready(function() {
   var scrolling_display = new ScrollingDisplay();
-  setTimeout(function() { scrolling_display.append('<p id="whoa">Whoa<br />Whoa<br />Whoa<br />Whoa'
-    + '<br />Whoa</p><p id="ding">Ding</p>'); }, 100);
-  setTimeout(function() { scrolling_display.append('<p id="pants">Pants</p>'); }, 500);
+  //setTimeout(function() { scrolling_display.append('<p id="whoa">Whoa<br />Whoa<br />Whoa<br />Whoa'
+    //+ '<br />Whoa</p><p id="ding">Ding</p>'); }, 100);
+  //setTimeout(function() { scrolling_display.append('<p id="pants">Pants</p>'); }, 500);
+
 
   $('.client-name').click(function() {
-    console.log(arguments);
-    scrolling_display.append('<dl><dt>Pants</dt><dd>No</dd></dl>');
+    var details_container = $('<div/>');
+    scrolling_display.append(details_container);
+
+    var client_id = this.id.match(/\d+$/)[0];
+    $.ajax({
+      url: '/client/' + client_id,
+      complete: function(response, status) {
+        details_container.html(response.responseText);
+      }
+    });
   });
 
   new TextInflater('.client-name, .channel-name, h1', 1.3);
