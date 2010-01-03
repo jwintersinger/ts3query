@@ -1,4 +1,4 @@
-Remember to set "web.ctx.homepath = '/ts'" in ts3web.py.
+cd /var/www/vhosts/localhost && ln -s /var/www/projects/ts3query/static ts3query-static
 
 Lighttpd config:
   server.modules   += ( "mod_rewrite", "mod_fastcgi" )
@@ -16,8 +16,9 @@ Lighttpd config:
     )
   }
 
-
+Remember to set "web.ctx.homepath = '/ts'" in ts3web.py.
 Must first run "aptitude install python-flup" for FastCGI support.
+
 Spawncing FastCGI process:
   SOCKET=/var/run/webpy/ts3web.socket 
   mkdir /var/run/webpy && chown webpy:webpy /var/run/webpy
