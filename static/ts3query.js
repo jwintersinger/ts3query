@@ -21,6 +21,16 @@ function configure_details_handler(scrolling_display) {
     var details_container = append_new_details_container();
     $.ajax({
       url: '/client/' + client_id,
+      // BUG: if user initiates a new ajax request before the old one completes, the display will
+      // not scroll to the proper position -- the bottom of the preceding filler text will be
+      // visible at the top of the display viewport. This occurs because, if the request has not
+      // completed, the content returned by the request has not yet been inserted into the DOM. As
+      // the height of the container changes when this content is inserted, the scrolling
+      // calculation is thrown off. I see no way to fix this short of estimating the height that the
+      // inserted content will occupy. As the content occupies a constant number of lines (though different
+      // depending on whether it's a request for server or player details), this should be possible,
+      // but error prone due to rendering differences between browsers, as wll as the need to account for
+      // margin, padding, border, and so forth.
       complete: function(response, status) { details_container.html(response.responseText); }
     });
   });
