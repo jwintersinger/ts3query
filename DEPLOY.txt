@@ -17,6 +17,7 @@ Lighttpd config:
   }
 
 
+Must first run "aptitude install python-flup" for FastCGI support.
 Spawncing FastCGI process:
   SOCKET=/var/run/webpy/ts3web.socket 
   mkdir /var/run/webpy && chown webpy:webpy /var/run/webpy
