@@ -1,0 +1,14 @@
+$def with (server_details)
+
+<dl>
+  <dt>Name</dt><dd>$server_details['virtualserver_name']</dd>
+  <dt>Clients</dt><dd>$server_details['virtualserver_clientsonline'] / $server_details['virtualserver_maxclients']</dd>
+  <dt>Platform</dt><dd>$server_details['virtualserver_platform']</dd>
+  <dt>Version</dt><dd>$server_details['virtualserver_version']</dd>
+  <dt>Uptime</dt><dd>$make_milliseconds_human_readable(server_details['virtualserver_uptime'])</dd>
+  <dt>Connections made</dt><dd>$server_details['virtualserver_client_connections']</dd>
+  <dt>Query connections made</dt><dd>$server_details['virtualserver_query_client_connections']</dd>
+  <dt>Data sent</dt><dd>$make_bytes_human_readable(server_details['connection_bytes_sent_total'])</dd>
+  <dt>Data received</dt><dd>$make_bytes_human_readable(server_details['connection_bytes_received_total'])</dd>
+  <dt>Created</dt><dd>$make_posix_timestamp_human_readable(server_details['virtualserver_created'])</dd>
+</dl>

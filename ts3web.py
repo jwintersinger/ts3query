@@ -9,13 +9,15 @@ VOICE_PORT = Config.DEFAULT_VOICE_PORT
 
 
 # web.py miscellany.
-#web.ctx.homepath = '/ts'
+web.ctx.homepath = ''#'/ts'
 urls = (
   web.http.url('/'),                        'ChannelAndClientList',
   web.http.url('/channels.json'),           'ChannelAndClientListJson',
   web.http.url('/populated_channels.json'), 'PopulatedChannelAndClientListJson',
   web.http.url('/client/(\d+)'),            'ClientDetails',
-  web.http.url('/client/(\d+).json'),       'ClientDetailsJson'
+  web.http.url('/client/(\d+).json'),       'ClientDetailsJson',
+  web.http.url('/server'),                  'ServerDetails',
+  web.http.url('/server.json'),             'ServerDetailsJson',
 )
 
 
@@ -25,6 +27,9 @@ def create_template_helpers():
 
   def make_milliseconds_human_readable(seconds):
     seconds /= 1000
+    if seconds == 0:
+      return '0 seconds'
+
     periods = (
       ('day',    24*60*60),
       ('hour',   60*60),
@@ -33,13 +38,26 @@ def create_template_helpers():
     )                  
     readable_lengths = []
     for period_name, length in periods:
-      if seconds == 0:
-        return '0 seconds'
       if seconds >= length:
         num_periods = int(seconds / length) 
         seconds -= num_periods*length
         readable_lengths.append('%s %s%s' % (num_periods, period_name, ('s', '')[num_periods == 1]))
     return ', '.join(readable_lengths)
+
+  def make_bytes_human_readable(bytes):
+    if bytes == 0:
+      return '0 B'
+
+    amounts = (
+      ('TiB', 2**40),
+      ('GiB', 2**30),
+      ('MiB', 2**20),
+      ('KiB', 2**10),
+      ('B',   2**0)
+    )
+    for amount_name, amount in amounts:
+      if bytes >= amount:
+        return '%.2f %s' % (float(bytes) / amount, amount_name)
 
   from datetime import datetime
   def make_posix_timestamp_human_readable(timestamp):
@@ -112,6 +130,19 @@ class ClientDetailsJson(JsonRequest):
 
   def GET(self, client_id):
     return json.dumps(self._tsc.list_client_details(client_id))
+
+class ServerDetails(BaseRequest):
+  '''Displays details for server.'''
+
+  def GET(self):
+    return render.server_details(self._tsc.list_server_details())
+
+
+class ServerDetailsJson(JsonRequest):
+  '''Displays JSON-formatted details for server.'''
+
+  def GET(self):
+    return json.dumps(self._tsc.list_server_details())
 
 
 if __name__ == '__main__':

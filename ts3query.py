@@ -213,6 +213,9 @@ class TsConverser:
   def list_client_details(self, client_id):
     return self._query.query('clientinfo', {'clid': client_id})[0]
 
+  def list_server_details(self):
+    return self._query.query('serverinfo')[0]
+
 
 class Printer:
   '''Base class for all output types used by command-line interface.'''

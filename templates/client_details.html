@@ -7,7 +7,7 @@ $def with (client_details)
   <dt>Away</dt><dd>$boolean_int_to_human_readable(client_details['client_away'])</dd>
   <dt>Microphone muted</dt><dd>$boolean_int_to_human_readable(client_details['client_input_muted'])</dd>
   <dt>Speakers/headset muted</dt><dd>$boolean_int_to_human_readable(client_details['client_output_muted'])</dd>
-  <dt>Client platform</dt><dd>$client_details['client_platform']</dd>
+  <dt>Platform</dt><dd>$client_details['client_platform']</dd>
   <dt>Version</dt><dd>$client_details['client_version']</dd>
   <dt>Total connections</dt><dd>$client_details['client_totalconnections']</dd>
   <dt>Account created</dt><dd>$make_posix_timestamp_human_readable(client_details['client_created'])</dd>
