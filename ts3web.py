@@ -14,9 +14,45 @@ urls = (
   URL_PREFIX + '/',                        'ChannelAndClientList',
   URL_PREFIX + '/channels.json',           'ChannelAndClientListJson',
   URL_PREFIX + '/populated_channels.json', 'PopulatedChannelAndClientListJson',
+  URL_PREFIX + '/client/(\d+)',            'ClientDetails',
   URL_PREFIX + '/client/(\d+).json',       'ClientDetailsJson'
 )
-render = web.template.render('templates/')
+
+def create_template_helpers():
+  def boolean_int_to_human_readable(b):
+    return (b == 1) and 'Yes' or 'No'
+
+  def make_milliseconds_human_readable(seconds):
+    seconds /= 1000
+    periods = (
+      ('day',    24*60*60),
+      ('hour',   60*60),
+      ('minute', 60),
+      ('second', 1)
+    )                  
+    readable_lengths = []
+    for period_name, length in periods:
+      if seconds == 0:
+        return '0 seconds'
+      if seconds >= length:
+        num_periods = int(seconds / length) 
+        seconds -= num_periods*length
+        readable_lengths.append('%s %s%s' % (num_periods, period_name, ('s', '')[num_periods == 1]))
+    return ', '.join(readable_lengths)
+
+  from datetime import datetime
+  def make_posix_timestamp_human_readable(timestamp):
+    timestamp = 1262476312
+    return datetime.fromtimestamp(timestamp).strftime('%b %d, %Y')
+
+  template_helpers = {}
+  l = locals()
+  for f in locals().values():
+    if callable(f):
+      template_helpers[f.__name__] = f
+  return template_helpers
+
+render = web.template.render('templates/', globals=create_template_helpers())
 app = web.application(urls, globals())
 
 
@@ -57,6 +93,13 @@ class PopulatedChannelAndClientListJson(JsonRequest):
 
   def GET(self):
     return json.dumps(self._tsc.list_populated_channels())
+
+
+class ClientDetails(BaseRequest):
+  '''Displays details for particular client.'''
+
+  def GET(self, client_id):
+    return render.client_details(self._tsc.list_client_details(client_id))
 
 
 class ClientDetailsJson(JsonRequest):

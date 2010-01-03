@@ -211,7 +211,7 @@ class TsConverser:
     return self._query.query('login', {'client_login_name': username, 'client_login_password': password})
 
   def list_client_details(self, client_id):
-    return self._query.query('clientinfo', {'clid': client_id})
+    return self._query.query('clientinfo', {'clid': client_id})[0]
 
 
 class Printer:

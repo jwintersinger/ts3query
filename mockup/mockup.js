@@ -6,7 +6,7 @@ $(document).ready(function() {
     + '<br />Whoa</p><p id="ding">Ding</p>'); }, 100);
   setTimeout(function() { scrolling_display.append('<p id="pants">Pants</p>'); }, 500);
 
-  $('.client').click(function() {
+  $('.client-name').click(function() {
     console.log(arguments);
     scrolling_display.append('<dl><dt>Pants</dt><dd>No</dd></dl>');
   });
