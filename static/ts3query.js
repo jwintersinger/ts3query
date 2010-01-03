@@ -7,21 +7,37 @@ $(document).ready(function() {
   //setTimeout(function() { scrolling_display.append('<p id="pants">Pants</p>'); }, 500);
 
 
-  $('.client-name').click(function() {
+
+  configure_details_handler(scrolling_display);
+  new TextInflater('.client-name, .channel-name, h1', 1.3);
+});
+
+function configure_details_handler(scrolling_display) {
+  var append_new_details_container = function() {
     var details_container = $('<div/>');
     scrolling_display.append(details_container);
+    return details_container;
+  };
 
+  // Client details.
+  $('.client-name').click(function() {
     var client_id = this.id.match(/\d+$/)[0];
+    var details_container = append_new_details_container();
     $.ajax({
       url: '/client/' + client_id,
-      complete: function(response, status) {
-        details_container.html(response.responseText);
-      }
+      complete: function(response, status) { details_container.html(response.responseText); }
     });
   });
 
-  new TextInflater('.client-name, .channel-name, h1', 1.3);
-});
+  // Server details.
+  $('#server-name').click(function() {
+    var details_container = append_new_details_container();
+    $.ajax({
+      url: '/server',
+      complete: function(response, status) { details_container.html(response.responseText); }
+    });
+  });
+}
 
 
 // See http://gsgd.co.uk/sandbox/jquery/easing/ for the jQuery Easing Plugin.
