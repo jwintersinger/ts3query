@@ -20,7 +20,7 @@ function configure_details_handler(scrolling_display) {
     var client_id = this.id.match(/\d+$/)[0];
     var details_container = append_new_details_container();
     $.ajax({
-      url: '/client/' + client_id,
+      url: 'client/' + client_id,
       // BUG: if user initiates a new ajax request before the old one completes, the display will
       // not scroll to the proper position -- the bottom of the preceding filler text will be
       // visible at the top of the display viewport. This occurs because, if the request has not
@@ -39,7 +39,7 @@ function configure_details_handler(scrolling_display) {
   $('#server-name').click(function() {
     var details_container = append_new_details_container();
     $.ajax({
-      url: '/server',
+      url: 'server',
       complete: function(response, status) { details_container.html(response.responseText); }
     });
   });
