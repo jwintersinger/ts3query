@@ -31,7 +31,7 @@ Spawning FastCGI process:
   SOCKET=$SOCKET_DIR/ts3web.socket 
 
   mkdir $SOCKET_DIR && chown webpy:webpy $SOCKET_DIR
-  # Setting REAL_SCRIPT_NAME to "" may not be necessary, but I do it just in case.
+  # REAL_SCRIPT_NAME controls the URL prefix of the app.
   REAL_SCRIPT_NAME="/ts" spawn-fcgi -f /var/www/projects/ts3query/ts3web.py \
                                  -s $SOCKET \
                                  -u webpy \
