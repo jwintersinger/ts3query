@@ -8,3 +8,5 @@ Allow user to send text message to server/channel/client.
 Provide idle times for each client in command-line output.
 Imbue Web interface with greater aesthetic appeal.
   Look into using alternative handwritten font, perhaps -- I chose the current one in haste.
+Figure out why Lighttpd doesn't cache font (is the file too big?)
+  This leads to scrolling issues on display -- font may not have loaded by time our 500 ms timeout has elapsed
