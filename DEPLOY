@@ -21,6 +21,7 @@ Lighttpd config:
       ))
     )
   }
+Note that I don't think one can have duplicate blocks -- that is, if a url.redirect block is already written, I must integrate the above rule into it rather than copy-and-pasting the new block verbatim to create two blocks
 
 Must first run "aptitude install python-flup" for FastCGI support.
 
