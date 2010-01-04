@@ -3,12 +3,16 @@ chmod 755 /var/www/projects/ts3query/ts3web.py
 
 
 Lighttpd config:
-  server.modules   += ( "mod_rewrite", "mod_fastcgi" )
+  server.modules   += ( "mod_rewrite", "mod_fastcgi", "mod_redirect" )
 
   $HTTP["host"] == "localhost" {
+    url.redirect = (
+      "^/ts$" => "/ts/"
+    )
+
     url.rewrite-once = (
       "^/ts/static/(.*)$" => "/ts3query-static/$1",
-      "^/ts/?(.*)$" => "/ts3web.py/$1"
+      "^/ts/(.*)$" => "/ts3web.py/$1"
     )
 
     fastcgi.server = ( "/ts3web.py" =>

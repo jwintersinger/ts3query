@@ -16,7 +16,7 @@ VOICE_PORT = Config.DEFAULT_VOICE_PORT
 # FastCGI.
 web.ctx.homepath = ''
 urls = (
-  web.http.url('/?'),                       'ChannelAndClientList', # Accept both /ts and /ts/.
+  web.http.url('/'),                        'ChannelAndClientList',
   web.http.url('/channels.json'),           'ChannelAndClientListJson',
   web.http.url('/populated_channels.json'), 'PopulatedChannelAndClientListJson',
   web.http.url('/client/(\d+)'),            'ClientDetails',
