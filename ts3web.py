@@ -79,7 +79,12 @@ def create_template_helpers():
   return template_helpers
 
 
-render = web.template.render('templates/', globals=create_template_helpers())
+def make_template_path():
+  from os import path
+  return path.join(path.dirname(__file__), 'templates/')
+# Path to templates must be absolute rather than relative, or templates will not be found under
+# FastCGI production.
+render = web.template.render(make_template_path(), globals=create_template_helpers())
 app = web.application(urls, globals())
 
 
