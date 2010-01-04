@@ -18,17 +18,17 @@ Lighttpd config:
     )
   }
 
-Remember to set "web.ctx.homepath = '/ts'" in ts3web.py.
 Must first run "aptitude install python-flup" for FastCGI support.
 
 
 Spawning FastCGI process:
+  #!/bin/sh
   SOCKET_DIR=/var/run/webpy
   SOCKET=$SOCKET_DIR/ts3web.socket 
 
   mkdir $SOCKET_DIR && chown webpy:webpy $SOCKET_DIR
   # Setting REAL_SCRIPT_NAME to "" may not be necessary, but I do it just in case.
-  REAL_SCRIPT_NAME="" spawn-fcgi -f /var/www/projects/ts3query/ts3web.py \
+  REAL_SCRIPT_NAME="/ts" spawn-fcgi -f /var/www/projects/ts3query/ts3web.py \
                                  -s $SOCKET \
                                  -u webpy \
                                  -g webpy

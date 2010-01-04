@@ -9,12 +9,12 @@ VOICE_PORT = Config.DEFAULT_VOICE_PORT
 
 
 # web.py miscellany.
-# homepath must be empty in development, for there we are relying on web.py's built-in Web server to
-# serve static files, and it will only serve such files without a prefix. In production, our
-# production Web server (Lighttpd) serves the static files, and thus we are able to use a prefix.
-web.ctx.homepath = ''    # Development
-#web.ctx.homepath = '/ts' # Production
-
+# For some inexplicable reason, homepath is not yet set, so I must set it to an empty value here.
+# The URL prefix for the app is then controlled by the REAL_SCRIPT_NAME environment variable set
+# when spawn-fcgi is run -- set it to "/ts", for example. This is the only combination I've found
+# that allows me to serve static files in development, while also deploying under a URL prefix using
+# FastCGI.
+web.ctx.homepath = ''
 urls = (
   web.http.url('/?'),                       'ChannelAndClientList', # Accept both /ts and /ts/.
   web.http.url('/channels.json'),           'ChannelAndClientListJson',
