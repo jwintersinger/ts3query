@@ -9,6 +9,9 @@ VOICE_PORT = Config.DEFAULT_VOICE_PORT
 
 
 # web.py miscellany.
+# homepath must be empty in development, for there we are relying on web.py's built-in Web server to
+# serve static files, and it will only serve such files without a prefix. In production, our
+# production Web server (Lighttpd) serves the static files, and thus we are able to use a prefix.
 web.ctx.homepath = ''    # Development
 #web.ctx.homepath = '/ts' # Production
 

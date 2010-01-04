@@ -1,6 +1,7 @@
 #!/bin/sh
 name="ts3query-$1"
 svn export . "$name"
+chmod 755 "$name"/ts3{query,web}.py
 
 cd "$name" && tar xvzf ../web/web.py-0.33.tar.gz web.py-0.33/web/
 mv web.py-0.33/web . && rmdir web.py-0.33
