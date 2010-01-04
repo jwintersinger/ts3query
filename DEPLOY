@@ -9,8 +9,8 @@ Lighttpd config:
       "^/ts/?(.*)$" => "/ts3web.py/$1"
     )
 
-    fastcgi.server    = ( "/ts3web.py" =>
-      (("socket"    => "/tmp/ts3query.socket",
+    fastcgi.server = ( "/ts3web.py" =>
+      (("socket"    => "/var/run/webpy/ts3web.socket",
         "check-local" => "disable"
       ))
     )

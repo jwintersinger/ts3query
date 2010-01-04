@@ -5,3 +5,6 @@ Load server info initially without ajax to prevent waiting for scrolling display
 Store SID to prevent having to query for it on each connection -- reduce query count by 1.
 Look into using long-lived connections (websockets? comet?) to enable near-real-time querying.
 Allow user to send text message to server/channel/client.
+Provide idle times for each client in command-line output.
+Imbue Web interface with greater aesthetic appeal.
+  Look into using alternative handwritten font, perhaps -- I chose the current one in haste.
