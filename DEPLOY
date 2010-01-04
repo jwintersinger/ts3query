@@ -1,4 +1,6 @@
 cd /var/www/vhosts/localhost && ln -s /var/www/projects/ts3query/static ts3query-static
+chmod 755 /var/www/projects/ts3query/ts3web.py
+
 
 Lighttpd config:
   server.modules   += ( "mod_rewrite", "mod_fastcgi" )
@@ -19,14 +21,15 @@ Lighttpd config:
 Remember to set "web.ctx.homepath = '/ts'" in ts3web.py.
 Must first run "aptitude install python-flup" for FastCGI support.
 
-Spawncing FastCGI process:
-  SOCKET=/var/run/webpy/ts3web.socket 
-  mkdir /var/run/webpy && chown webpy:webpy /var/run/webpy
+
+Spawning FastCGI process:
+  SOCKET_DIR=/var/run/webpy
+  SOCKET=$SOCKET_DIR/ts3web.socket 
+
+  mkdir $SOCKET_DIR && chown webpy:webpy $SOCKET_DIR
+  # Setting REAL_SCRIPT_NAME to "" may not be necessary, but I do it just in case.
   REAL_SCRIPT_NAME="" spawn-fcgi -f /var/www/projects/ts3query/ts3web.py \
                                  -s $SOCKET \
                                  -u webpy \
                                  -g webpy
   chown webpy:www-data $SOCKET && chmod 660 $SOCKET
-
-Troubleshooting:
-  Ensure /var/www/projects/ts3query/ts3web.py has file mode 0755.
