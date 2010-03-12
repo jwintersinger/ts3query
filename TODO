@@ -10,3 +10,5 @@ Imbue Web interface with greater aesthetic appeal.
   Look into using alternative handwritten font, perhaps -- I chose the current one in haste.
 Figure out why Lighttpd doesn't cache font (is the file too big?)
   This leads to scrolling issues on display -- font may not have loaded by time our 500 ms timeout has elapsed
+
+Limit time components to 2 when humanizing -- i.e., display "8 hours, 43 minutes" rather than "8 hours, 43 minutes, 20 seconds"
