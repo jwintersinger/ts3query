@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 import re
 import socket
 import sys
@@ -241,15 +241,43 @@ class HumanPrinter(Printer):
     separator = len(s)*'='
     return '\n'.join((separator, s, separator))
 
+  # TODO: copied from ts3web.py. Should restructure application to avoid duplication.
+  def _make_milliseconds_human_readable(self, seconds):
+    seconds /= 1000
+    if seconds == 0:
+      return '0 seconds'
+
+    periods = (
+      ('day',    24*60*60),
+      ('hour',   60*60),
+      ('minute', 60),
+      ('second', 1)
+    )
+    readable_lengths = []
+    for period_name, length in periods:
+      if seconds >= length:
+        num_periods = int(seconds / length)
+        seconds -= num_periods*length
+        readable_lengths.append('%s %s%s' % (num_periods, period_name, ('s', '')[num_periods == 1]))
+    return ', '.join(readable_lengths)
+
   def print_channels_and_clients(self):
     '''Prints all channels with clients in them.'''
     channels = self._ts_converser.list_populated_channels()
+
     for i in range(len(channels)):
       channel = channels[i]
       print self._generate_header(channel['channel_name'])
+
       for client in channel['clients']:
+        client_details = self._ts_converser.list_client_details(client['clid'])
+
         postamble = (client['client_away'] == 1) and ' (away)' or ''
+        postamble += ' (idle %s)' % self._make_milliseconds_human_readable(client_details['client_idle_time'])
+        postamble += (client['client_input_muted'] == 1) and  ' (mic muted)'      or ''
+        postamble += (client['client_output_muted'] == 1) and ' (speakers muted)' or ''
         print '%s%s' % (client['client_nickname'], postamble)
+
       if i < len(channels) - 1: # Print blank line between channels unless on last channel.
         print ''
 
