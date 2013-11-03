@@ -2,6 +2,7 @@
 import re
 import socket
 import sys
+import config
 from optparse import OptionParser
 
 def debug(msg):
@@ -70,8 +71,15 @@ class TsQuery:
       raise Exception('Improper header returned upon connection')
     self._select_server()
 
+  def _login(self):
+    return self.query('login', {
+      'client_login_name':     config.USERNAME,
+      'client_login_password': config.PASSWORD,
+    })
+
   def _select_server(self):
     '''Select virtual server based on its port.'''
+    self._login()
     response = self.query('serveridgetbyport', params={'virtualserver_port': self._server_port})
     sid = response[0]['server_id']
     self.query('use', params={'sid': sid})
